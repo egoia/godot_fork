@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="VisualShaderNodeConvexPolygon2DSDF" inherits="VisualShaderNode" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
+	<brief_description>
+		Returns the Signed Distance Field of a convex polygon. To be used within the visual shader graph.
+	</brief_description>
+	<description>
+		Given a number of sides, a radius and a rotation, calculates the signed distance field of a regular convex polygon. The center of the field is (0,0).
+	</description>
+	<tutorials>
+	</tutorials>
+</class>

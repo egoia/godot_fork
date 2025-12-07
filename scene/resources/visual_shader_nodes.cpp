@@ -8518,3 +8518,69 @@ void VisualShaderNodeReroute::_bind_methods() {
 VisualShaderNodeReroute::VisualShaderNodeReroute() {
 	set_input_port_default_value(0, 0.0);
 }
+
+////////////// ConvexPolygon2DSDF
+
+String VisualShaderNodeConvexPolygon2DSDF::get_caption() const {
+	return "ConvexPolygon2DSDF";
+}
+
+int VisualShaderNodeConvexPolygon2DSDF::get_input_port_count() const {
+	return 4;
+}
+
+VisualShaderNode::PortType VisualShaderNodeConvexPolygon2DSDF::get_input_port_type(int p_port) const {
+	switch (p_port) {
+		case 0:
+			return PORT_TYPE_VECTOR_2D;
+		case 1:
+			return PORT_TYPE_SCALAR;
+		case 2 :
+			return PORT_TYPE_SCALAR;
+		case 3 : 
+			return PORT_TYPE_SCALAR;
+	}
+	return PORT_TYPE_SCALAR;
+}
+
+String VisualShaderNodeConvexPolygon2DSDF::get_input_port_name(int p_port) const {
+	switch (p_port) {
+		case 0:
+			return "UV";
+		case 1:
+			return "sides";
+		case 2 :
+			return "radius";
+		case 3 : 
+			return "rotation";
+	}
+	return String();
+}
+
+int VisualShaderNodeConvexPolygon2DSDF::get_output_port_count() const {
+	return 1;
+}
+
+VisualShaderNode::PortType VisualShaderNodeConvexPolygon2DSDF::get_output_port_type(int p_port) const {
+	return PORT_TYPE_SCALAR;
+}
+
+String VisualShaderNodeConvexPolygon2DSDF::get_output_port_name(int p_port) const {
+	return "distance";
+}
+
+String VisualShaderNodeConvexPolygon2DSDF::generate_code(Shader::Mode p_mode, VisualShader::Type p_type, int p_id, const String *p_input_vars, const String *p_output_vars, bool p_for_preview) const {
+	return "float rad_rot = " +p_input_vars[3]+ " * (PI / 180.0);\n"
+			"float angle = atan("+p_input_vars[0] +".y ," + p_input_vars[0]+ ".x ) + rad_rot;\n"
+			"angle = "+p_input_vars[0] +".y>0.? angle : angle + PI*2.;\n"
+			"float polygon = cos(PI/"+p_input_vars[1]+")/cos(2./"+p_input_vars[1]+" * asin(cos("+p_input_vars[1]+"/2.*angle))) *"+p_input_vars[2]+";\n"
+			+ p_output_vars[0]+" = length("+p_input_vars[0] +") - polygon;\n";
+}
+
+VisualShaderNodeConvexPolygon2DSDF::VisualShaderNodeConvexPolygon2DSDF() {
+	set_input_port_default_value(0, Vector2(0.0, 0.0)); // UV
+	set_input_port_default_value(1, 4.0); // sides
+	set_input_port_default_value(2, 0.2); // radius
+	set_input_port_default_value(3, 0.0); // rotation
+}
+
