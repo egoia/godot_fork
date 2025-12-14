@@ -8584,3 +8584,71 @@ VisualShaderNodeConvexPolygon2DSDF::VisualShaderNodeConvexPolygon2DSDF() {
 	set_input_port_default_value(3, 0.0); // rotation
 }
 
+
+////////////// Ellipse2DSDF
+
+String VisualShaderNodeEllipse2DSDF::get_caption() const {
+	return "Ellipse2DSDF";
+}
+
+int VisualShaderNodeEllipse2DSDF::get_input_port_count() const {
+	return 4;
+}
+
+VisualShaderNode::PortType VisualShaderNodeEllipse2DSDF::get_input_port_type(int p_port) const {
+	switch (p_port) {
+		case 0:
+			return PORT_TYPE_VECTOR_2D;
+		case 1:
+			return PORT_TYPE_SCALAR;
+		case 2 :
+			return PORT_TYPE_SCALAR;
+		case 3 : 
+			return PORT_TYPE_SCALAR;
+	}
+	return PORT_TYPE_SCALAR;
+}
+
+String VisualShaderNodeEllipse2DSDF::get_input_port_name(int p_port) const {
+	switch (p_port) {
+		case 0:
+			return "UV";
+		case 1:
+			return "height";
+		case 2 :
+			return "width";
+		case 3 : 
+			return "rotation";
+	}
+	return String();
+}
+
+int VisualShaderNodeEllipse2DSDF::get_output_port_count() const {
+	return 1;
+}
+
+VisualShaderNode::PortType VisualShaderNodeEllipse2DSDF::get_output_port_type(int p_port) const {
+	return PORT_TYPE_SCALAR;
+}
+
+String VisualShaderNodeEllipse2DSDF::get_output_port_name(int p_port) const {
+	return "distance";
+}
+
+String VisualShaderNodeEllipse2DSDF::generate_code(Shader::Mode p_mode, VisualShader::Type p_type, int p_id, const String *p_input_vars, const String *p_output_vars, bool p_for_preview) const {
+	return "float rad_rot = " +p_input_vars[3]+ " * (PI / 180.0);\n"
+			"float angle = atan("+p_input_vars[0] +".y ," + p_input_vars[0]+ ".x ) + rad_rot;\n"
+			"angle = "+p_input_vars[0] +".y>0.? angle : angle + PI*2.;\n"
+			"float height = "+p_input_vars[1] +";\n"
+			"float width = "+p_input_vars[2] +";\n"
+			"float ellipse = sqrt(height*height * width*width / (width*width * sin(angle)*sin(angle) + height*height * cos(angle)*cos(angle)));\n"
+			+ p_output_vars[0]+" = length("+p_input_vars[0] +") - ellipse;\n";
+}
+
+VisualShaderNodeEllipse2DSDF::VisualShaderNodeEllipse2DSDF() {
+	set_input_port_default_value(0, Vector2(0.0, 0.0)); // UV
+	set_input_port_default_value(1, 0.2); // height
+	set_input_port_default_value(2, 0.4); // width
+	set_input_port_default_value(3, 0.0); // rotation
+}
+

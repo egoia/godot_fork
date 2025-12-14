@@ -863,6 +863,7 @@ void register_scene_types() {
 	GDREGISTER_CLASS(VisualShaderNodeVaryingGetter);
 	GDREGISTER_CLASS(VisualShaderNodeReroute);
 	GDREGISTER_CLASS(VisualShaderNodeConvexPolygon2DSDF);
+	GDREGISTER_CLASS(VisualShaderNodeEllipse2DSDF);
 
 	GDREGISTER_CLASS(VisualShaderNodeSDFToScreenUV);
 	GDREGISTER_CLASS(VisualShaderNodeScreenUVToSDF);

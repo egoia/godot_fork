@@ -3774,6 +3774,16 @@ void VisualShaderEditor::_setup_node(VisualShaderNode *p_node, const Vector<Vari
 			return;
 		}
 	}
+
+	// ELLIPSE 2D SDF
+	{
+		VisualShaderNodeEllipse2DSDF *polygon = Object::cast_to<VisualShaderNodeEllipse2DSDF>(p_node);
+
+		if (polygon) {
+			ERR_FAIL_COND(p_ops[0].get_type() != Variant::INT);
+			return;
+		}
+	}
 }
 
 void VisualShaderEditor::_add_node(int p_idx, const Vector<Variant> &p_ops, const String &p_resource_path, int p_node_idx) {
@@ -7472,6 +7482,7 @@ VisualShaderEditor::VisualShaderEditor() {
 		add_options.push_back(AddOption("TextureSDF", "SDF", "VisualShaderNodeTextureSDF", TTR("Performs a SDF texture lookup."), {}, VisualShaderNode::PORT_TYPE_SCALAR, TYPE_FLAGS_FRAGMENT | TYPE_FLAGS_LIGHT, Shader::MODE_CANVAS_ITEM));
 		add_options.push_back(AddOption("TextureSDFNormal", "SDF", "VisualShaderNodeTextureSDFNormal", TTR("Performs a SDF normal texture lookup."), {}, VisualShaderNode::PORT_TYPE_VECTOR_2D, TYPE_FLAGS_FRAGMENT | TYPE_FLAGS_LIGHT, Shader::MODE_CANVAS_ITEM));
 		add_options.push_back(AddOption("ConvexPolygon2DSDF", "SDF", "VisualShaderNodeConvexPolygon2DSDF", TTR("A convex polygon SDF"), {}, VisualShaderNode::PORT_TYPE_SCALAR, TYPE_FLAGS_FRAGMENT | TYPE_FLAGS_LIGHT, Shader::MODE_CANVAS_ITEM));
+		add_options.push_back(AddOption("Ellipse2DSDF", "SDF", "VisualShaderNodeEllipse2DSDF", TTR("An ellipse SDF"), {}, VisualShaderNode::PORT_TYPE_SCALAR, TYPE_FLAGS_FRAGMENT | TYPE_FLAGS_LIGHT, Shader::MODE_CANVAS_ITEM));
 	}
 
 	// TEXTURES
