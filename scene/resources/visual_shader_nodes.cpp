@@ -8570,11 +8570,12 @@ String VisualShaderNodeConvexPolygon2DSDF::get_output_port_name(int p_port) cons
 }
 
 String VisualShaderNodeConvexPolygon2DSDF::generate_code(Shader::Mode p_mode, VisualShader::Type p_type, int p_id, const String *p_input_vars, const String *p_output_vars, bool p_for_preview) const {
-	return "float rad_rot = " +p_input_vars[3]+ " * (PI / 180.0);\n"
-			"float angle = atan("+p_input_vars[0] +".y ," + p_input_vars[0]+ ".x ) + rad_rot;\n"
-			"angle = "+p_input_vars[0] +".y>0.? angle : angle + PI*2.;\n"
-			"float polygon = cos(PI/"+p_input_vars[1]+")/cos(2./"+p_input_vars[1]+" * asin(cos("+p_input_vars[1]+"/2.*angle))) *"+p_input_vars[2]+";\n"
-			+ p_output_vars[0]+" = length("+p_input_vars[0] +") - polygon;\n";
+	String id = String::num_int64(p_id);
+	return "float rad_rot"+id+" = " +p_input_vars[3]+ " * (PI / 180.0);\n"
+			"float angle"+id+" = atan("+p_input_vars[0] +".y ," + p_input_vars[0]+ ".x ) + rad_rot"+id+";\n"
+			"angle"+id+" = "+p_input_vars[0] +".y>0.? angle"+id+" : angle"+id+" + PI*2.;\n"
+			"float polygon"+id+" = cos(PI/"+p_input_vars[1]+")/cos(2./"+p_input_vars[1]+" * asin(cos("+p_input_vars[1]+"/2.*angle"+id+"))) *"+p_input_vars[2]+";\n"
+			+ p_output_vars[0]+" = length("+p_input_vars[0] +") - polygon"+id+";\n";
 }
 
 VisualShaderNodeConvexPolygon2DSDF::VisualShaderNodeConvexPolygon2DSDF() {
@@ -8636,13 +8637,14 @@ String VisualShaderNodeEllipse2DSDF::get_output_port_name(int p_port) const {
 }
 
 String VisualShaderNodeEllipse2DSDF::generate_code(Shader::Mode p_mode, VisualShader::Type p_type, int p_id, const String *p_input_vars, const String *p_output_vars, bool p_for_preview) const {
-	return "float rad_rot = " +p_input_vars[3]+ " * (PI / 180.0);\n"
-			"float angle = atan("+p_input_vars[0] +".y ," + p_input_vars[0]+ ".x ) + rad_rot;\n"
-			"angle = "+p_input_vars[0] +".y>0.? angle : angle + PI*2.;\n"
-			"float height = "+p_input_vars[1] +";\n"
-			"float width = "+p_input_vars[2] +";\n"
-			"float ellipse = sqrt(height*height * width*width / (width*width * sin(angle)*sin(angle) + height*height * cos(angle)*cos(angle)));\n"
-			+ p_output_vars[0]+" = length("+p_input_vars[0] +") - ellipse;\n";
+	String id = String::num_int64(p_id);
+	return "float rad_rot" + id +" = " +p_input_vars[3]+ " * (PI / 180.0);\n"
+			"float angle"+id+" = atan("+p_input_vars[0] +".y ," + p_input_vars[0]+ ".x ) + rad_rot"+id+";\n"
+			"angle"+id+" = "+p_input_vars[0] +".y>0.? angle"+id+" : angle"+id+" + PI*2.;\n"
+			"float height"+id+" = "+p_input_vars[1] +";\n"
+			"float width"+id+" = "+p_input_vars[2] +";\n"
+			"float ellipse"+id+" = sqrt(height"+id+"*height"+id+" * width"+id+"*width"+id+" / (width"+id+"*width"+id+" * sin(angle"+id+")*sin(angle"+id+") + height"+id+"*height"+id+" * cos(angle"+id+")*cos(angle"+id+")));\n"
+			+ p_output_vars[0]+" = length("+p_input_vars[0] +") - ellipse"+id+";\n";
 }
 
 VisualShaderNodeEllipse2DSDF::VisualShaderNodeEllipse2DSDF() {
